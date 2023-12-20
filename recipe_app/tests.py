@@ -135,3 +135,11 @@ class RecipeViewTestCase(TestCase):
 
     def test_delete_recipe_no_id(self):
         ...
+
+    # * Test relationships between Recipe and Ingredient
+
+    def test_one_recipe_to_one_ingredient(self):
+        ...
+
+    def test_many_ingredients_to_one_recipe(self):
+        ...
