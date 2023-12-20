@@ -4,16 +4,15 @@ from typing import Optional, Generator
 
 from django.http import HttpRequest
 from django.http import JsonResponse
+from django.http import Http404
 from django.views.generic import View
 from django.db import transaction
-from django.core.exceptions import ObjectDoesNotExist
 
 # Not stable for production, but makes testing easier
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Recipe, Ingredient
-from django.http import Http404
 
 
 # Create your views here.
