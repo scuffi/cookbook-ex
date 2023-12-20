@@ -42,7 +42,23 @@ class RecipeView(View):
         return JsonResponse(created_recipe.serialise())
         
     def patch(self, request: HttpRequest, id: int) -> JsonResponse:
-        return JsonResponse({})
+        recipe = self._handle_get_by_id(id)
+        body = json.loads(request.body.decode('utf-8'))
+        
+        if 'name' in body:
+            recipe.name = body['name']
+            
+        if 'description' in body:
+            recipe.description = body['description']
+            
+        if 'ingredients' in body:
+            recipe.ingredients.all().delete()
+            for ingredient_data in body['ingredients']:
+                Ingredient.objects.create(name=ingredient_data['name'], recipe=recipe)
+                
+        recipe.save()
+        
+        return JsonResponse(recipe.serialise())
         
     def delete(self, request: HttpRequest, id: int) -> JsonResponse:
         recipe = self._handle_get_by_id(id)
