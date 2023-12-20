@@ -49,3 +49,5 @@ coverage report
 ```
 
 Alternatively, you can use `coverage lcov` or `coverage html` for other presentation methods.
+
+> If you're using [this package](https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters) to view code coverage in VSCode, you will need to output the coverage in lcov, and change the name of the output file to `lcov.info`
