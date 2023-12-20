@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms.models import model_to_dict
 
 # Create your models here.
 class Ingredient(models.Model):
@@ -15,3 +16,11 @@ class Recipe(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    def serialise(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'ingredients': [{'name': ingredient.name} for ingredient in self.ingredients.all()],
+            }
