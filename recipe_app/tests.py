@@ -5,8 +5,9 @@ from .models import Recipe, Ingredient
 # Create your tests here.
 class RecipeViewTestCase(TestCase):
     def setUp(self):
-        recipes = [
+        self.recipes = [
             {
+                "id": 1,
                 "name": "Pizza",
                 "description": "Put it in the oven",
                 "ingredients": [
@@ -16,6 +17,7 @@ class RecipeViewTestCase(TestCase):
                 ],
             },
             {
+                "id": 2,
                 "name": "Lasagna",
                 "description": "Put it in the oven",
                 "ingredients": [
@@ -27,7 +29,7 @@ class RecipeViewTestCase(TestCase):
             },
         ]
 
-        for recipe in recipes:
+        for recipe in self.recipes:
             created_recipe = Recipe.objects.create(
                 name=recipe["name"], description=recipe["description"]
             )
@@ -39,24 +41,31 @@ class RecipeViewTestCase(TestCase):
 
     # * Test cases for GET requests
     def test_get_recipe_list(self):
-        response = self.client.get("/recipes")
+        response = self.client.get("/recipes/")
+
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        self.assertEqual(response.json(), self.recipes)
 
     def test_get_recipe_by_id(self):
         response = self.client.get("/recipes/1/")
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), self.recipes[0])
 
     def test_get_recipe_by_id_not_found(self):
         response = self.client.get("/recipes/100/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_get_recipe_by_search(self):
-        response = self.client.get("/recipes/?name=chicken")
+        response = self.client.get("/recipes/?name=Pi")
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json(), [self.recipes[0]])
 
     def test_get_recipe_by_search_empty(self):
         response = self.client.get("/recipes/?name=chicken")
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 0)
 
     # * Test cases for POST requests
     def test_create_recipe(self):
