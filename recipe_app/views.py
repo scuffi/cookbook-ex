@@ -84,4 +84,4 @@ class RecipeView(View):
     def delete(self, request: HttpRequest, id: int) -> JsonResponse:
         recipe = self._handle_get_by_id(id)
         recipe.delete()
-        return JsonResponse({}, status=204)
+        return JsonResponse({"message": f"Deleted '{recipe.name}'"}, status=200)
