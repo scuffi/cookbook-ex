@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Ingredient(models.Model):
     name = models.CharField(max_length=255, primary_key=True)
-    recipe = models.ForeignKey('Recipe', related_name='ingredients', on_delete=models.CASCADE, unique=True)
+    recipe = models.ForeignKey('Recipe', related_name='ingredients', on_delete=models.CASCADE)
     
     def __str__(self) -> str:
         return self.name
