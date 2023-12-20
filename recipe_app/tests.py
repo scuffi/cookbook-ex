@@ -19,7 +19,7 @@ class RecipeViewTestCase(TestCase):
             {
                 "id": 2,
                 "name": "Lasagna",
-                "description": "Put it in the oven",
+                "description": "Burn it",
                 "ingredients": [
                     {"name": "pasta"},
                     {"name": "cheese"},
@@ -69,10 +69,47 @@ class RecipeViewTestCase(TestCase):
 
     # * Test cases for POST requests
     def test_create_recipe(self):
-        ...
+        data = {
+            "name": "Hamburger",
+            "description": "Grill it",
+            "ingredients": [
+                {"name": "bun"},
+                {"name": "lettuce"},
+                {"name": "patty"},
+                {"name": "sauce"},
+            ],
+        }
+        response = self.client.post(
+            "/recipes/", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["id"], 3)
+        self.assertEqual(Recipe.objects.count(), 3)
+        self.assertEqual(Ingredient.objects.count(), 11)
+        self.assertEqual(Recipe.objects.get(id=3).serialise(), response.json())
 
     def test_create_recipe_invalid(self):
-        ...
+        data = {
+            "name": "Fake Hamburger",
+            "description": "Grill it",
+        }
+        response = self.client.post(
+            "/recipes/", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+        # Check it didn't create a recipe
+        self.assertEqual(Recipe.objects.count(), 2)
+
+    def test_create_recipe_no_body(self):
+        response = self.client.post("/recipes/", content_type="application/json")
+
+        self.assertEqual(response.status_code, 400)
+
+        # Check it didn't create a recipe
+        self.assertEqual(Recipe.objects.count(), 2)
 
     # * Test cases for PATCH requests
 
