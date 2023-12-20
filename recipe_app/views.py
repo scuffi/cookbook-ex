@@ -1,7 +1,18 @@
-from django.shortcuts import render
+from typing import Optional
+from django.http import HttpRequest
 from django.views.generic import View
+
 
 # Create your views here.
 class RecipeView(View):
-    def get(self, request):
-        return render(request, 'recipe_app/recipe.html', {})
+    def get(self, request: HttpRequest, id: Optional[int] = None):
+        ...
+        
+    def post(self, request: HttpRequest):
+        ...
+        
+    def patch(self, request: HttpRequest, id: Optional[int] = None):
+        ...
+        
+    def delete(self, request: HttpRequest, id: Optional[int] = None):
+        ...
