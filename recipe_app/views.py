@@ -45,16 +45,22 @@ class RecipeView(View):
     def post(self, request: HttpRequest) -> JsonResponse:
         body = json.loads(request.body.decode("utf-8"))
 
-        created_recipe = Recipe.objects.create(
-            name=body["name"], description=body["description"]
-        )
-
-        for ingredient_data in body["ingredients"]:
-            Ingredient.objects.create(
-                name=ingredient_data["name"], recipe=created_recipe
+        try:
+            created_recipe = Recipe.objects.create(
+                name=body["name"], description=body["description"]
             )
 
-        return JsonResponse(created_recipe.serialise())
+            for ingredient_data in body["ingredients"]:
+                Ingredient.objects.create(
+                    name=ingredient_data["name"], recipe=created_recipe
+                )
+        except KeyError:
+            return JsonResponse(
+                {"error": "Invalid recipe, make sure it includes all required keys"},
+                status=400,
+            )
+
+        return JsonResponse(created_recipe.serialise(), status=201)
 
     def patch(self, request: HttpRequest, id: int) -> JsonResponse:
         recipe = self._handle_get_by_id(id)
