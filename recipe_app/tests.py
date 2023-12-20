@@ -116,12 +116,13 @@ class RecipeViewTestCase(TestCase):
     def test_modify_recipe_name(self):
         response = self.client.patch(
             "/recipes/1/",
-            data={"name": "la pizza"},
+            data={"name": "la pizza", "description": "Do you have a pizza oven?"},
             content_type="application/json",
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["name"], "la pizza")
+        self.assertEqual(response.json()["description"], "Do you have a pizza oven?")
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 7)
         self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
@@ -182,18 +183,45 @@ class RecipeViewTestCase(TestCase):
     # * Test cases for DELETE requests
 
     def test_delete_recipe(self):
-        ...
+        response = self.client.delete("/recipes/2/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Recipe.objects.count(), 1)
+        self.assertEqual(Ingredient.objects.count(), 3)
 
     def test_delete_recipe_not_found(self):
-        ...
+        response = self.client.delete("/recipes/100/")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 7)
 
     def test_delete_recipe_no_id(self):
-        ...
+        self.assertRaises(
+            TypeError,
+            self.client.delete,
+            "/recipes/",
+        )
 
     # * Test relationships between Recipe and Ingredient
 
     def test_one_recipe_to_one_ingredient(self):
-        ...
+        pizza_recipe = Recipe.objects.get(id=1)
+        caprese_recipe = Recipe.objects.get(id=2)
 
-    def test_many_ingredients_to_one_recipe(self):
-        ...
+        # Check that the recipes have the correct number of ingredients
+        self.assertEqual(caprese_recipe.ingredients.count(), 4)
+        self.assertEqual(pizza_recipe.ingredients.count(), 3)
+
+        dough_ingredient = Ingredient.objects.get(name="dough")
+
+        dough_ingredient.recipe = caprese_recipe
+        dough_ingredient.save()
+        caprese_recipe.save()
+
+        # Check that the dough has been reassigned
+        self.assertEqual(dough_ingredient.recipe, caprese_recipe)
+
+        # Check that the recipes have the correct number of ingredients after reassignment
+        self.assertEqual(caprese_recipe.ingredients.count(), 5)
+        self.assertEqual(pizza_recipe.ingredients.count(), 2)
