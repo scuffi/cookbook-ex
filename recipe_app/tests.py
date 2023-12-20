@@ -13,11 +13,11 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         
     def test_get_recipe_by_search(self):
-        response = self.client.get('/recipes/?search=chicken')
+        response = self.client.get('/recipes/?name=chicken')
         self.assertEqual(response.status_code, 200)
         
     def test_get_recipe_by_search_empty(self):
-        response = self.client.get('/recipes/?search=chicken')
+        response = self.client.get('/recipes/?name=chicken')
         self.assertEqual(response.status_code, 200)
         
     # * Test cases for POST requests
