@@ -18,13 +18,13 @@ class RecipeViewTestCase(TestCase):
             },
             {
                 "id": 2,
-                "name": "Lasagna",
-                "description": "Burn it",
+                "name": "Caprese",
+                "description": "...is a salad",
                 "ingredients": [
-                    {"name": "pasta"},
-                    {"name": "cheese"},
-                    {"name": "beef"},
-                    {"name": "sauce"},
+                    {"name": "mozzerella"},
+                    {"name": "tomato"},
+                    {"name": "basil"},
+                    {"name": "oil"},
                 ],
             },
         ]
@@ -113,17 +113,71 @@ class RecipeViewTestCase(TestCase):
 
     # * Test cases for PATCH requests
 
-    def test_modify_recipe(self):
-        ...
+    def test_modify_recipe_name(self):
+        response = self.client.patch(
+            "/recipes/1/",
+            data={"name": "la pizza"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["name"], "la pizza")
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 7)
+        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+
+    def test_modify_recipe_ingredients(self):
+        response = self.client.patch(
+            "/recipes/1/",
+            data={
+                "ingredients": [
+                    {"name": "pineapple"},
+                    {"name": "ham"},
+                ]
+            },
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()["ingredients"]), 2)
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 6)
+        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
 
     def test_modify_recipe_invalid(self):
-        ...
+        response = self.client.patch(
+            "/recipes/1/",
+            data={"no_exist": "hello"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 7)
+        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+
+        # Check that it didn't modify the original recipe
+        self.assertEqual(Recipe.objects.get(id=1).serialise(), self.recipes[0])
 
     def test_modify_recipe_not_found(self):
-        ...
+        response = self.client.patch(
+            "/recipes/100/",
+            data={"name": "Mac and Cheese"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 7)
 
     def test_modify_recipe_no_id(self):
-        ...
+        self.assertRaises(
+            TypeError,
+            self.client.patch,
+            "/recipes/",
+            data={"name": "Mac and Cheese"},
+            content_type="application/json",
+        )
 
     # * Test cases for DELETE requests
 
