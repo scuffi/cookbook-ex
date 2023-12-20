@@ -1,12 +1,11 @@
 import json
 
-from typing import Optional
+from typing import Optional, Generator
 
 from django.http import HttpRequest
 from django.http import JsonResponse
 from django.views.generic import View
-from django.forms.models import model_to_dict
-from django.forms.models import modelform_factory
+from django.db import transaction
 
 # Not stable for production, but makes testing easier
 from django.utils.decorators import method_decorator
@@ -19,19 +18,20 @@ from .models import Recipe, Ingredient
 @method_decorator(csrf_exempt, name='dispatch')
 class RecipeView(View):
     
-    def _handle_get_by_id(self, id: int) -> JsonResponse:
-        return JsonResponse(Recipe.objects.get(id=id).serialise())
+    def _handle_get_by_id(self, id: int) -> Recipe:
+        return Recipe.objects.get(id=id)
     
-    def _handle_get_all(self) -> JsonResponse:
-        return JsonResponse([recipe.serialise() for recipe in Recipe.objects.all()], safe=False)
+    def _handle_get_all(self) -> Generator[dict, None, None]:
+        return (recipe.serialise() for recipe in Recipe.objects.all())
     
-    def get(self, request: HttpRequest, id: Optional[int] = None):
+    def get(self, request: HttpRequest, id: Optional[int] = None) -> JsonResponse:
         if id is None:
-            return self._handle_get_all()
+            return JsonResponse(list(self._handle_get_all()), safe=False)
         
-        return self._handle_get_by_id(id)
+        return JsonResponse(self._handle_get_by_id(id).serialise(), safe=False)
         
-    def post(self, request: HttpRequest):
+    @transaction.atomic
+    def post(self, request: HttpRequest) -> JsonResponse:
         body = json.loads(request.body.decode('utf-8'))
         
         created_recipe = Recipe.objects.create(name=body['name'], description=body['description'])
@@ -41,8 +41,10 @@ class RecipeView(View):
 
         return JsonResponse(created_recipe.serialise())
         
-    def patch(self, request: HttpRequest, id: int):
+    def patch(self, request: HttpRequest, id: int) -> JsonResponse:
         return JsonResponse({})
         
-    def delete(self, request: HttpRequest, id: int):
-        return JsonResponse({})
+    def delete(self, request: HttpRequest, id: int) -> JsonResponse:
+        recipe = self._handle_get_by_id(id)
+        recipe.delete()
+        return JsonResponse({}, status=204)
