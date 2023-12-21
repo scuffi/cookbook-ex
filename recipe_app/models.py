@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from django.db import models
 
 
@@ -15,7 +17,14 @@ class Recipe(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
-    def serialise(self):
+    def serialise(self) -> Dict[str, Any]:
+        """
+        The `serialise` function returns a dictionary representation of a Recipe in a dictionary format, including its id, name,
+        description, and a list of ingredients.
+
+        Returns:
+            a dict representation of a Recipe object.
+        """
         return {
             "id": self.id,
             "name": self.name,
