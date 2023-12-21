@@ -113,7 +113,7 @@ class RecipeViewTestCase(TestCase):
 
     # * Test cases for PATCH requests
 
-    def test_modify_recipe_name(self):
+    def test_modify_recipe_name_and_description(self):
         response = self.client.patch(
             "/recipes/1/",
             data={"name": "la pizza", "description": "Do you have a pizza oven?"},
