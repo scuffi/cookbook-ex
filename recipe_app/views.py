@@ -1,11 +1,12 @@
 import json
 
-from typing import Optional, Generator, Dict
+from typing import Optional, List, Dict
 
 from django.http import HttpRequest
 from django.http import JsonResponse
 from django.http import Http404
 from django.db import transaction
+from django.db.models import QuerySet
 
 from rest_framework.views import APIView
 
@@ -14,6 +15,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Recipe, Ingredient
+from .serializers import RecipeSerializer, IngredientSerializer
 
 
 # Make the view exempt from CSRF checks
@@ -43,7 +45,7 @@ class RecipeView(APIView):
         except Recipe.DoesNotExist:
             raise Http404("Recipe does not exist")
 
-    def _handle_get_all(self, query_params: Dict) -> Generator[Dict, None, None]:
+    def _handle_get_all(self, query_params: Dict) -> QuerySet[Recipe]:
         """
         The function `_handle_get_all` returns a generator that yields serialized recipe objects based on a
         query parameter.
@@ -60,17 +62,11 @@ class RecipeView(APIView):
         representations of Recipe objects that have a name containing the query string (case-insensitive).
         """
         if query_params:
-            return (
-                recipe.serialise()
-                for recipe in Recipe.objects.filter(
-                    **{
-                        f"{key}__icontains": value
-                        for key, value in query_params.items()
-                    }
-                )
+            return Recipe.objects.filter(
+                **{f"{key}__icontains": value for key, value in query_params.items()}
             )
 
-        return (recipe.serialise() for recipe in Recipe.objects.all())
+        return Recipe.objects.all()
 
     def get(self, request: HttpRequest, id: Optional[int] = None) -> JsonResponse:
         """
@@ -93,11 +89,15 @@ class RecipeView(APIView):
         """
         if id is None:
             return JsonResponse(
-                list(self._handle_get_all(query_params=request.GET.dict())),
+                RecipeSerializer(
+                    self._handle_get_all(query_params=request.GET.dict()), many=True
+                ).data,
                 safe=False,
             )
 
-        return JsonResponse(self._handle_get_by_id(id).serialise(), safe=False)
+        return JsonResponse(
+            RecipeSerializer(self._handle_get_by_id(id)).data, safe=False
+        )
 
     @transaction.atomic
     def post(self, request: HttpRequest) -> JsonResponse:
