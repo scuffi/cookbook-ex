@@ -47,19 +47,18 @@ class RecipeView(APIView):
 
     def _handle_get_all(self, query_params: Dict) -> QuerySet[Recipe]:
         """
-        The function `_handle_get_all` returns a generator that yields serialized recipe objects based on a
-        query parameter.
+        The `_handle_get_all` function returns all Recipe objects if no query parameters are provided,
+        otherwise it filters the Recipe objects based on the provided query parameters.
 
         Args:
-          query (str): The `query` parameter is a string that represents the search query. It is used to
-        filter the recipes based on their name. If the `query` is `None`, it means that all recipes should
-        be returned without any filtering.
+          query_params (Dict): A dictionary containing the query parameters for filtering the Recipe
+        objects. The keys of the dictionary represent the fields to filter on, and the values represent the
+        values to filter for.
 
         Returns:
-          a generator that yields dictionaries. The dictionaries represent serialized recipe objects. If the
-        query parameter is None, the generator will yield serialized representations of all Recipe objects
-        in the database. If the query parameter is not None, the generator will yield serialized
-        representations of Recipe objects that have a name containing the query string (case-insensitive).
+          The method `_handle_get_all` returns a `QuerySet` of `Recipe` objects. If `query_params` is not
+        empty, it filters the `Recipe` objects based on the key-value pairs in `query_params` using the
+        `icontains` lookup. If `query_params` is empty, it returns all `Recipe` objects.
         """
         if query_params:
             return Recipe.objects.filter(
