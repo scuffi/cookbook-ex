@@ -1,6 +1,6 @@
 import json
 
-from typing import Optional, Generator
+from typing import Optional, Generator, Dict
 
 from django.http import HttpRequest
 from django.http import JsonResponse
@@ -49,7 +49,7 @@ class RecipeView(View):
         except Recipe.DoesNotExist:
             raise Http404("Recipe does not exist")
 
-    def _handle_get_all(self, query: str) -> Generator[dict, None, None]:
+    def _handle_get_all(self, query_params: Dict) -> Generator[Dict, None, None]:
         """
         The function `_handle_get_all` returns a generator that yields serialized recipe objects based on a
         query parameter.
@@ -65,12 +65,18 @@ class RecipeView(View):
         in the database. If the query parameter is not None, the generator will yield serialized
         representations of Recipe objects that have a name containing the query string (case-insensitive).
         """
-        if query is None:
-            return (recipe.serialise() for recipe in Recipe.objects.all())
-        return (
-            recipe.serialise()
-            for recipe in Recipe.objects.filter(name__icontains=query)
-        )
+        if query_params:
+            return (
+                recipe.serialise()
+                for recipe in Recipe.objects.filter(
+                    **{
+                        f"{key}__icontains": value
+                        for key, value in query_params.items()
+                    }
+                )
+            )
+
+        return (recipe.serialise() for recipe in Recipe.objects.all())
 
     def get(self, request: HttpRequest, id: Optional[int] = None) -> JsonResponse:
         """
@@ -93,7 +99,7 @@ class RecipeView(View):
         """
         if id is None:
             return JsonResponse(
-                list(self._handle_get_all(query=request.GET.get("name", None))),
+                list(self._handle_get_all(query_params=request.GET.dict())),
                 safe=False,
             )
 
