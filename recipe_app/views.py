@@ -5,8 +5,9 @@ from typing import Optional, Generator, Dict
 from django.http import HttpRequest
 from django.http import JsonResponse
 from django.http import Http404
-from django.views.generic import View
 from django.db import transaction
+
+from rest_framework.views import APIView
 
 # Not stable for production, but makes testing easier
 from django.utils.decorators import method_decorator
@@ -18,7 +19,7 @@ from .models import Recipe, Ingredient
 # Make the view exempt from CSRF checks
 # ! Not secure, just used for testing purposes
 @method_decorator(csrf_exempt, name="dispatch")
-class RecipeView(View):
+class RecipeView(APIView):
     """
     RecipeView is a view in a Django application that handles GET, POST, PATCH, and DELETE requests.
 
