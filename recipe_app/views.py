@@ -9,6 +9,7 @@ from django.db import transaction
 from django.db.models import QuerySet
 
 from rest_framework.views import APIView
+from rest_framework.parsers import JSONParser
 
 # Not stable for production, but makes testing easier
 from django.utils.decorators import method_decorator
@@ -112,24 +113,14 @@ class RecipeView(APIView):
         Returns:
           JsonResponse object of the created Recipe object.
         """
-        body = json.loads(request.body.decode("utf-8"))
+        body = JSONParser().parse(request)
+        serializer = RecipeSerializer(data=body)
 
-        if "name" not in body or "description" not in body or "ingredients" not in body:
-            return JsonResponse(
-                {"error": "Invalid request body, include all keys"},
-                status=400,
-                safe=False,
-            )
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
 
-        created_recipe = Recipe.objects.create(
-            name=body["name"], description=body["description"]
-        )
-
-        for ingredient_data in body["ingredients"]:
-            Ingredient.objects.create(
-                name=ingredient_data["name"], recipe=created_recipe
-            )
-        return JsonResponse(created_recipe.serialise(), status=201)
+        return JsonResponse(serializer.errors, status=400)
 
     def patch(self, request: HttpRequest, id: int) -> JsonResponse:
         """
