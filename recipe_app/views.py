@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Recipe, Ingredient
-from .serializers import RecipeSerializer, IngredientSerializer
+from .serializers import RecipeSerializer
 
 
 # Make the view exempt from CSRF checks
