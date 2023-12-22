@@ -24,13 +24,6 @@ class RecipeView(APIView):
     RecipeView is a view in a Django application that handles GET, POST, PATCH, and DELETE requests.
 
     It acts as a CRUD API to interact with Recipes and their associated Ingredients.
-
-    Attributes:
-        recipes (list): The `recipes` attribute is a list of dictionaries. Each dictionary represents a
-    recipe object. Each recipe object has a `name`, `description`, and `ingredients` key. The `name` and
-    `description` keys have string values. The `ingredients` key has a list of dictionaries as its value.
-    Each dictionary in the list represents an ingredient object. Each ingredient object has a `name` key
-    with a string value.
     """
 
     def _handle_get_by_id(self, id: int) -> Recipe:
