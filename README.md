@@ -12,10 +12,24 @@ Next, you want to install the requirements into your environment _(Virtual envir
 pip install -r requirements.txt
 ```
 
+Now you have all requirements installed, you must migrate all the models for the Django app
+
+```
+python manage.py migrate
+```
+
 Now you should be able to start the Django server using
 
 ```
 python manage.py runserver
+```
+
+Or...
+
+Run the application through docker using
+
+```
+docker compose up --build
 ```
 
 Test away...
