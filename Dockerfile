@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the Django project into the container
 COPY . .
 
+# Set the environment variable to make logs immediately visible
+ENV PYTHONUNBUFFERED 1 
+
 # Expose the port that the Django application will run on
 EXPOSE 8000
 
