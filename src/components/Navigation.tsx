@@ -54,6 +54,12 @@ const RecipeDescription = styled.p`
     margin-top: 0rem;
 `;
 
+const RecipeIcon = styled.p`
+    font-size: 2rem;
+    margin: 0;
+    padding: 0;
+`;
+
 export function Navigation() {
     const [recipes, setRecipes] = useState([]);
 
@@ -72,8 +78,13 @@ export function Navigation() {
                 {recipes.map(recipe => (
                     <div key={recipe['id']}>
                         <NavButton>
-                            <RecipeName>{recipe['name']}</RecipeName>
-                            <RecipeDescription>{recipe['description']}</RecipeDescription>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <RecipeIcon>{recipe['icon']}</RecipeIcon>
+                                <div style={{ marginLeft: "10px" }}>
+                                    <RecipeName>{recipe['name']}</RecipeName>
+                                    <RecipeDescription>{recipe['description']}</RecipeDescription>
+                                </div>
+                            </div>
                         </NavButton>
                     </div>
                 ))}
