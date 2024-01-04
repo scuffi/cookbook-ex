@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Navigation } from './components/Navigation';
+import { Create } from './routes/Create';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,16 +15,20 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Navigation />
-      <Route>
-        <App />
-      </Route>
-      <Route path="/recipe/:id">
+      <div style={{ display: 'flex' }}>
+        <Navigation />
+        <div>
+          <Route>
+            <Create />
+          </Route>
+          <Route path="/recipe/:id">
 
-      </Route>
-      <Route path="/create">
-
-      </Route>
+          </Route>
+          <Route path="/create">
+            <Create />
+          </Route>
+        </div>
+      </div>
     </BrowserRouter>
   </React.StrictMode>
 );

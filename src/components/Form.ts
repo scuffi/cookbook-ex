@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const Label = styled.label`
     display: block;
     margin-bottom: 0.5rem;
-
+    margin-top: 1.5rem;
+    font-weight: 600;
 `;
 
 export const Input = styled.input`
