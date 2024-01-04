@@ -1,6 +1,8 @@
 from django.test import TestCase
 from .models import Recipe, Ingredient
 
+from pprint import pprint
+
 
 # Create your tests here.
 class RecipeViewTestCase(TestCase):
@@ -10,6 +12,7 @@ class RecipeViewTestCase(TestCase):
                 "id": 1,
                 "name": "Pizza",
                 "description": "Put it in the oven",
+                "icon": "🍕",
                 "ingredients": [
                     {"name": "dough"},
                     {"name": "cheese"},
@@ -20,6 +23,7 @@ class RecipeViewTestCase(TestCase):
                 "id": 2,
                 "name": "Caprese",
                 "description": "...is a salad",
+                "icon": None,
                 "ingredients": [
                     {"name": "mozzerella"},
                     {"name": "tomato"},
@@ -31,7 +35,9 @@ class RecipeViewTestCase(TestCase):
 
         for recipe in self.recipes:
             created_recipe = Recipe.objects.create(
-                name=recipe["name"], description=recipe["description"]
+                name=recipe["name"],
+                description=recipe["description"],
+                icon=recipe["icon"],
             )
 
             for ingredient_data in recipe["ingredients"]:
@@ -50,6 +56,9 @@ class RecipeViewTestCase(TestCase):
     def test_get_recipe_by_id(self):
         response = self.client.get("/recipes/1/")
         self.assertEqual(response.status_code, 200)
+
+        pprint(response.json())
+        pprint(self.recipes[0])
         self.assertEqual(response.json(), self.recipes[0])
 
     def test_get_recipe_by_id_not_found(self):

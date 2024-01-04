@@ -1,4 +1,5 @@
 import json
+import emoji
 
 from typing import Optional, Dict
 
@@ -117,6 +118,9 @@ class RecipeView(APIView):
         serializer = RecipeSerializer(data=body)
 
         if serializer.is_valid():
+            if "icon" in body and not emoji.is_emoji(serializer.validated_data["icon"]):
+                return JsonResponse({"message": "Invalid emoji for icon"}, status=400)
+
             serializer.save()
             return JsonResponse(serializer.data, status=201)
 
@@ -144,6 +148,12 @@ class RecipeView(APIView):
 
         if "description" in body:
             recipe.description = body["description"]
+
+        if "icon" in body:
+            if emoji.is_emoji(body["icon"]):
+                recipe.icon = body["icon"]
+            else:
+                return JsonResponse({"message": "Invalid emoji for icon"}, status=400)
 
         if "ingredients" in body:
             recipe.ingredients.all().delete()

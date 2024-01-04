@@ -15,6 +15,7 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    icon = models.CharField(max_length=1, null=True)
     description = models.TextField()
 
     def serialise(self) -> Dict[str, Any]:
@@ -29,6 +30,7 @@ class Recipe(models.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
+            "icon": self.icon,
             "ingredients": [
                 {"name": ingredient.name} for ingredient in self.ingredients.all()
             ],

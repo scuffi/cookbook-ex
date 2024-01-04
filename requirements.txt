@@ -26,6 +26,10 @@ bracex==2.4
     # via
     #   -r requirements.in
     #   wcmatch
+build==1.0.3
+    # via
+    #   -r requirements.in
+    #   pip-tools
 certifi==2023.11.17
     # via
     #   -r requirements.in
@@ -42,6 +46,7 @@ click==8.1.7
     # via
     #   -r requirements.in
     #   click-option-group
+    #   pip-tools
     #   semgrep
 click-option-group==0.5.6
     # via
@@ -70,6 +75,8 @@ django-cors-headers==4.3.1
     # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in
+emoji==2.9.0
+    # via -r requirements.in
 exceptiongroup==1.2.0
     # via
     #   -r requirements.in
@@ -94,6 +101,10 @@ idna==3.6
     # via
     #   -r requirements.in
     #   requests
+importlib-metadata==7.0.1
+    # via
+    #   -r requirements.in
+    #   build
 jsonschema==4.20.0
     # via
     #   -r requirements.in
@@ -117,12 +128,15 @@ nodeenv==1.8.0
 packaging==23.2
     # via
     #   -r requirements.in
+    #   build
     #   semgrep
 peewee==3.17.0
     # via
     #   -r requirements.in
     #   semgrep
 pip-licenses==4.3.3
+    # via -r requirements.in
+pip-tools==7.3.0
     # via -r requirements.in
 platformdirs==4.1.0
     # via
@@ -138,6 +152,10 @@ pygments==2.17.2
     # via
     #   -r requirements.in
     #   rich
+pyproject-hooks==1.0.0
+    # via
+    #   -r requirements.in
+    #   build
 pytz==2023.3.post1
     # via
     #   -r requirements.in
@@ -181,6 +199,9 @@ sqlparse==0.4.4
 tomli==2.0.1
     # via
     #   -r requirements.in
+    #   build
+    #   pip-tools
+    #   pyproject-hooks
     #   semgrep
 typing-extensions==4.9.0
     # via
@@ -204,6 +225,13 @@ wcwidth==0.2.12
     # via
     #   -r requirements.in
     #   prettytable
+wheel==0.42.0
+    # via pip-tools
+zipp==3.17.0
+    # via
+    #   -r requirements.in
+    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
+# pip
 # setuptools
