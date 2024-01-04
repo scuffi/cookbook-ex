@@ -81,6 +81,7 @@ class RecipeViewTestCase(TestCase):
         data = {
             "name": "Hamburger",
             "description": "Grill it",
+            "icon": "🍔",
             "ingredients": [
                 {"name": "bun"},
                 {"name": "lettuce"},
@@ -120,6 +121,57 @@ class RecipeViewTestCase(TestCase):
         # Check it didn't create a recipe
         self.assertEqual(Recipe.objects.count(), 2)
 
+    def test_create_recipe_bad_icon(self):
+        data = {
+            "name": "Fake Hamburger",
+            "description": "Grill it",
+            "icon": "H",
+        }
+        response = self.client.post(
+            "/recipes/", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+        # Check it didn't create a recipe
+        self.assertEqual(Recipe.objects.count(), 2)
+
+    def test_create_recipe_multi_icon(self):
+        data = {
+            "name": "Fake Hamburger",
+            "description": "Grill it",
+            "icon": "🍔🍔",
+        }
+        response = self.client.post(
+            "/recipes/", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+        # Check it didn't create a recipe
+        self.assertEqual(Recipe.objects.count(), 2)
+
+    def test_create_recipe_no_icon(self):
+        data = {
+            "name": "Hamburger",
+            "description": "Grill it",
+            "ingredients": [
+                {"name": "bun"},
+                {"name": "lettuce"},
+                {"name": "patty"},
+                {"name": "sauce"},
+            ],
+        }
+        response = self.client.post(
+            "/recipes/", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["id"], 3)
+        self.assertEqual(Recipe.objects.count(), 3)
+        self.assertEqual(Ingredient.objects.count(), 11)
+        self.assertEqual(Recipe.objects.get(id=3).serialise(), response.json())
+
     # * Test cases for PATCH requests
 
     def test_modify_recipe_name_and_description(self):
@@ -135,6 +187,29 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 7)
         self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+
+    def test_modify_recipe_icon(self):
+        response = self.client.patch(
+            "/recipes/1/",
+            data={"icon": "🎃"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["icon"], "🎃")
+        self.assertEqual(Recipe.objects.count(), 2)
+        self.assertEqual(Ingredient.objects.count(), 7)
+        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+
+    def test_modify_recipe_icon_invalid(self):
+        response = self.client.patch(
+            "/recipes/1/",
+            data={"icon": "this isn't an emoji"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Recipe.objects.get(id=1).icon, "🍕")
 
     def test_modify_recipe_ingredients(self):
         response = self.client.patch(

@@ -36,7 +36,7 @@ Test away...
 
 # Testing & Coverage
 
-There are 17 unit tests providing 100% code coverage _(excluding `manage.py`)_.
+There are 22 unit tests providing 100% code coverage _(excluding `manage.py`)_.
 
 To run the tests through django, navigate to `project_dir/` in your terminal, then run
 
