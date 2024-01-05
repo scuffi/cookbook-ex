@@ -41,7 +41,7 @@ export function RecipeForm({ recipe }: Props) {
 
     return (
         <div>
-            <h1 style={{fontSize: "3rem"}}>{recipe ? "Update" : "Create"} a recipe</h1>
+            <h1 style={{fontSize: "3rem"}}>{recipe ? "Edit" : "Create"} a recipe</h1>
             <Label>Recipe name</Label>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
                 <Input required defaultValue={recipeState.name}/>
