@@ -16,12 +16,10 @@ export function Edit() {
 
     useEffect(() => {
         axios.get(`http://localhost:8000/recipes/${recipeId}`)
-            .then(response => setRecipe(response.data as Recipe))
+            .then(response => setRecipe(response.data))
             .catch(error => console.error(error));
     }
     , [recipeId]);
-
-    console.log(recipe);
 
     return (
         <Central>

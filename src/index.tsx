@@ -13,24 +13,22 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <div style={{ display: 'flex' }}>
-        <Navigation />
-        <div>
-          {/* <Route>
-            <Create />
-          </Route> */}
-          <Route path="/recipe/:recipeId">
-            <Edit />
-          </Route>
-          <Route path="/create">
-            <Create />
-          </Route>
-        </div>
+  <BrowserRouter>
+    <div style={{ display: 'flex' }}>
+      <Navigation />
+      <div>
+        {/* <Route>
+          <Create />
+        </Route> */}
+        <Route path="/recipe/:recipeId" >
+          <Edit />
+        </Route>
+        <Route path="/create">
+          <Create />
+        </Route>
       </div>
-    </BrowserRouter>
-  </React.StrictMode>
+    </div>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
