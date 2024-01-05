@@ -18,7 +18,7 @@ export function Create({ recipe }: Props) {
         ingredients: []
         } as Recipe);
 
-    function setAttribute(attribute: string, value: string) {
+    function setAttribute(attribute: string, value: any) {
         setRecipeState(prevState => ({...prevState, [attribute]: value}));
     }
 
@@ -34,7 +34,7 @@ export function Create({ recipe }: Props) {
                 <Label>Recipe description</Label>
                 <Input required size={50} multiple/>
                 <Label>Ingredients</Label>
-                <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setRecipeState(prevState => ({...prevState, ingredients: ingredients}))}/>
+                <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
                 <SuccessButton>Create recipe</SuccessButton>
             </div>
         </Central>
