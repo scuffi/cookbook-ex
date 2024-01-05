@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Button } from "./Button";
 import { Input } from "./Form";
+import { Ingredient } from "../models";
 
 const DeleteButton = styled.button`
     font-size: 1rem;
@@ -11,23 +12,23 @@ const DeleteButton = styled.button`
 `;
 
 type Props = {
-    ingredients: string[],
-    onChange: (ingredients: string[]) => void,
+    ingredients: Ingredient[],
+    onChange: (ingredients: Ingredient[]) => void,
 };
 
 export function IngredientForm({ ingredients, onChange }: Props) {
     const addIngredient = () => {
         const newIngredients = [...ingredients];
-        newIngredients.push("");
+        newIngredients.push({name: ""});
         onChange(newIngredients);
     }
 
     return <div style={{paddingBottom: "1rem"}}>{
         ingredients.map((ingredient, index) => (
             <div key={index} style={{paddingBottom: "1rem"}}>
-                <Input type="text" value={ingredient} onChange={event => {
+                <Input type="text" value={ingredient.name} onChange={event => {
                     const newIngredients = [...ingredients];
-                    newIngredients[index] = event.target.value;
+                    newIngredients[index] = {name: event.target.value};
                     onChange(newIngredients);
                 }} />
                 <DeleteButton onClick={() => {

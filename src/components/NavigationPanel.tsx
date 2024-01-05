@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const RecipeName = styled.p`
@@ -45,14 +46,16 @@ type Recipe = {
 
 export function NavigationPanel(recipe: Recipe) {
     return <div key={recipe['id']}>
-        <NavigationButton>
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <RecipeIcon>{recipe['icon']}</RecipeIcon>
-                <div style={{ marginLeft: "10px" }}>
-                    <RecipeName>{recipe['name']}</RecipeName>
-                    <RecipeDescription>{recipe['description']}</RecipeDescription>
+        <Link to={`/recipe/${recipe['id']}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <NavigationButton>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <RecipeIcon>{recipe['icon']}</RecipeIcon>
+                    <div style={{ marginLeft: "10px" }}>
+                        <RecipeName>{recipe['name']}</RecipeName>
+                        <RecipeDescription>{recipe['description']}</RecipeDescription>
+                    </div>
                 </div>
-            </div>
-        </NavigationButton>
+            </NavigationButton>
+        </Link>
     </div>;
 }
