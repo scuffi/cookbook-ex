@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Recipe } from '../models';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconSelector } from './IconSelector';
 import { IngredientForm } from './IngredientForm';
 import { SuccessButton } from './Button';
@@ -35,6 +35,15 @@ export function RecipeForm({ recipe }: Props) {
         ingredients: []
         } as Recipe);
 
+    useEffect(() => {
+        setRecipeState(recipe ? recipe : {
+            name: "",
+            description: "",
+            icon: "🍔",
+            ingredients: []
+        } as Recipe);
+        }, [recipe]);
+
     const setAttribute = (attribute: string, value: any) => {
         setRecipeState(prevState => ({...prevState, [attribute]: value}));
     }
@@ -44,11 +53,11 @@ export function RecipeForm({ recipe }: Props) {
             <h1 style={{fontSize: "3rem"}}>{recipe ? "Edit" : "Create"} a recipe</h1>
             <Label>Recipe name</Label>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
-                <Input required defaultValue={recipeState.name}/>
+                <Input required value={recipeState.name}/>
                 <IconSelector icon={recipeState.icon} onChange={(icon) => setAttribute("icon", icon)}/>
             </div>
             <Label>Recipe description</Label>
-            <Input required size={50} multiple defaultValue={recipeState.description}/>
+            <Input required size={50} multiple value={recipeState.description}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
             <SuccessButton>{recipe ? "Update" : "Create"} recipe</SuccessButton>
