@@ -21,3 +21,10 @@ export const Button = styled.button`
         transform: translateY(1px);
     }
 `;
+export const SuccessButton = styled(Button)`
+    background-color: #059e00;
+    border: 1px solid #008502;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+`;
