@@ -18,7 +18,7 @@ export function Create({ recipe }: Props) {
         ingredients: []
         } as Recipe);
 
-    function setAttribute(attribute: string, value: any) {
+    const setAttribute = (attribute: string, value: any) => {
         setRecipeState(prevState => ({...prevState, [attribute]: value}));
     }
 

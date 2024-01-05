@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function IngredientForm({ ingredients, onChange }: Props) {
-    function addIngredient() {
+    const addIngredient = () => {
         const newIngredients = [...ingredients];
         newIngredients.push("");
         onChange(newIngredients);
