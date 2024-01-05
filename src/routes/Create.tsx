@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
-import Picker, { EmojiClickData } from 'emoji-picker-react';
 import { Central } from '../components/Layout';
 import { Input, Label } from '../components/Form';
-import { Button, SuccessButton } from '../components/Button';
-import { Popover } from 'react-tiny-popover';
+import { SuccessButton } from '../components/Button';
 import { IngredientForm } from '../components/IngredientForm';
+import { Recipe } from '../models';
+import { IconSelector } from '../components/IconSelector';
 
-export function Create() {
-    const [isPickerVisible, setPickerVisibility] = useState(false);
-    const [emoji, setEmoji] = useState('🍕');
-    const [ingredients, setIngredients] = useState<string[]>([]);
+type Props = {
+    recipe?: Recipe | null,
+}
 
-    const onEmojiClick = (emoji: EmojiClickData, event: MouseEvent) => {
-        console.log(emoji.emoji);
-        setPickerVisibility(false);
-        setEmoji(emoji.emoji);
-    };
+export function Create({ recipe }: Props) {
+    const [recipeState, setRecipeState] = useState<Recipe>(recipe ? recipe : {
+        name: "",
+        description: "",
+        icon: "🍔",
+        ingredients: []
+        } as Recipe);
+
+    function setAttribute(attribute: string, value: string) {
+        setRecipeState(prevState => ({...prevState, [attribute]: value}));
+    }
 
     return (
         <Central>
@@ -24,20 +29,12 @@ export function Create() {
                 <Label>Recipe name</Label>
                 <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
                     <Input required/>
-                    <Popover
-                        isOpen={isPickerVisible}
-                        padding={10}
-                        positions={['right', 'bottom', 'left', 'top']}
-                        onClickOutside={() => setPickerVisibility(false)}
-                        content={<Picker onEmojiClick={onEmojiClick} />}
-                        >
-                        <Button onClick={() => setPickerVisibility(!isPickerVisible)}>{emoji}</Button>
-                    </Popover>
+                    <IconSelector icon={recipeState.icon} onChange={(icon) => setAttribute("icon", icon)}/>
                 </div>
                 <Label>Recipe description</Label>
                 <Input required size={50} multiple/>
                 <Label>Ingredients</Label>
-                <IngredientForm ingredients={ingredients} onChange={setIngredients}/>
+                <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setRecipeState(prevState => ({...prevState, ingredients: ingredients}))}/>
                 <SuccessButton>Create recipe</SuccessButton>
             </div>
         </Central>
