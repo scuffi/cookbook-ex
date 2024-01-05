@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Picker from 'emoji-picker-react';
+import Picker, { EmojiClickData } from 'emoji-picker-react';
 import { Central } from '../components/Layout';
 import { Input, Label } from '../components/Form';
 import { Button } from '../components/Button';
@@ -7,10 +7,12 @@ import { Popover } from 'react-tiny-popover';
 
 export function Create() {
     const [isPickerVisible, setPickerVisibility] = useState(false);
+    const [emoji, setEmoji] = useState('🍕');
 
-    const onEmojiClick = (event: any, emojiObject: any) => {
-        console.log(emojiObject);
+    const onEmojiClick = (emoji: EmojiClickData, event: MouseEvent) => {
+        console.log(emoji.emoji);
         setPickerVisibility(false);
+        setEmoji(emoji.emoji);
     };
 
     return (
@@ -18,7 +20,7 @@ export function Create() {
             <div>
                 <h1>Create a recipe</h1>
                 <Label>Recipe name</Label>
-                <div>
+                <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
                     <Input required/>
                     <Popover
                         isOpen={isPickerVisible}
@@ -27,7 +29,7 @@ export function Create() {
                         onClickOutside={() => setPickerVisibility(false)}
                         content={<Picker onEmojiClick={onEmojiClick} />}
                         >
-                        <Button onClick={() => setPickerVisibility(!isPickerVisible)}>🍕</Button>
+                        <Button onClick={() => setPickerVisibility(!isPickerVisible)}>{emoji}</Button>
                     </Popover>
                 </div>
                 <Label>Recipe description</Label>
