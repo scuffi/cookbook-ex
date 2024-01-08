@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { IconSelector } from './IconSelector';
 import { IngredientForm } from './IngredientForm';
 import { SuccessButton } from './Button';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export const Label = styled.label`
     display: block;
@@ -49,6 +51,26 @@ export function RecipeForm({ recipe }: Props) {
     }
 
     const handleSubmit = (event: any) => {
+        event.preventDefault();
+        if (recipe) {
+            axios.patch(`http://localhost:8000/recipes/${recipe.id}/`, recipeState)
+                .then(response => {
+                    toast.success("Recipe updated successfully!");
+                })
+                .catch(error => {
+                    toast.error("Something went wrong! Check the console for more information.");
+                    console.error(error);
+                });
+        } else {
+            axios.post("http://localhost:8000/recipes", recipeState)
+                .then(response => {
+                    toast.success("Recipe created successfully!");
+                })
+                .catch(error => {
+                    toast.error("Something went wrong! Check the console for more information.");
+                    console.error(error);
+                });
+        }
     }
 
     return (
@@ -63,7 +85,7 @@ export function RecipeForm({ recipe }: Props) {
             <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
-            <SuccessButton type='submit'>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+            <SuccessButton type='submit' onClick={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
         </form>
     );
 }

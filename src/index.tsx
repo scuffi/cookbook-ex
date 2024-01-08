@@ -8,12 +8,14 @@ import reportWebVitals from './reportWebVitals';
 import { Navigation } from './components/Navigation';
 import { Create } from './routes/Create';
 import { Edit } from './routes/Edit';
+import { Toaster } from 'react-hot-toast';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <BrowserRouter>
+    <div><Toaster/></div>
     <div style={{ display: 'flex' }}>
       <Navigation />
       <div>

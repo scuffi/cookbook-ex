@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { NavigationPanel } from "./NavigationPanel";
+import toast from "react-hot-toast";
 
 const Sidebar = styled.div`
     width: 20rem;
@@ -23,7 +24,10 @@ export function Navigation() {
     useEffect(() => {
         axios.get("http://localhost:8000/recipes")
             .then(response => setRecipes(response.data))
-            .catch(error => console.error(error));
+            .catch(error => {
+                toast.error("Failed to load recipes!");
+                console.error(error);
+            });
     }, []);
  
     return (
