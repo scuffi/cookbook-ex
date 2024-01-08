@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Recipe } from '../models';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IconSelector } from './IconSelector';
 import { IngredientForm } from './IngredientForm';
 import { SuccessButton } from './Button';
@@ -54,7 +54,7 @@ export function RecipeForm({ recipe }: Props) {
         setRecipeState(prevState => ({...prevState, [attribute]: value}));
     }
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (recipe) {
             axios.patch(`http://localhost:8000/recipes/${recipe.id}/`, recipeState)
@@ -98,7 +98,7 @@ export function RecipeForm({ recipe }: Props) {
             <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
-            <SuccessButton type='submit' onClick={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+            <SuccessButton type='submit' onSubmit={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
         </form>
     );
 }
