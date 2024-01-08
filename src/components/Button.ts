@@ -21,7 +21,7 @@ export const Button = styled.button`
         transform: translateY(1px);
     }
 `;
-export const SuccessButton = styled(Button)`
+export const ConfirmButton = styled(Button)`
     background-color: #059e00;
     border: 1px solid #008502;
     color: white;

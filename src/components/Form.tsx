@@ -3,7 +3,7 @@ import { Recipe } from "../models";
 import React, { useContext, useEffect, useState } from "react";
 import { IconSelector } from "./IconSelector";
 import { IngredientForm } from "./IngredientForm";
-import { DeleteButton, SuccessButton } from "./Button";
+import { DeleteButton, ConfirmButton } from "./Button";
 import RecipeContext from "../context/recipeContext";
 import fetchRecipes from "../api/fetchRecipes";
 import modifyRecipe from "../api/modifyRecipe";
@@ -118,9 +118,9 @@ export function RecipeForm({ recipe }: Props) {
         ingredients={recipeState.ingredients}
         onChange={(ingredients) => setAttribute("ingredients", ingredients)}
       />
-      <SuccessButton type="submit">
+      <ConfirmButton type="submit">
         {recipe ? "Update" : "Create"} recipe
-      </SuccessButton>
+      </ConfirmButton>
       {recipe && (
         <DeleteButton type="button" onClick={handleDelete}>
           Delete recipe
