@@ -10,7 +10,7 @@ const RecipeName = styled.p`
 
 const RecipeDescription = styled.p`
   font-size: 0.7rem;
-  font-weight: 200;
+  font-weight: 300;
   margin-top: 0rem;
 `;
 
