@@ -22,8 +22,8 @@ export function Navigation() {
     const { recipes, setRecipes } = useContext(RecipeContext);
 
     useEffect(() => {
-        fetchRecipes(setRecipes)
-    });
+        fetchRecipes().then(setRecipes);
+    }, [setRecipes]);
  
     return (
         <Sidebar>
