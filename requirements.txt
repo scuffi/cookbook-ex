@@ -31,9 +31,7 @@ build==1.0.3
     #   -r requirements.in
     #   pip-tools
 certifi==2023.11.17
-    # via
-    #   -r requirements.in
-    #   requests
+    # via requests
 cfgv==3.4.0
     # via
     #   -r requirements.in

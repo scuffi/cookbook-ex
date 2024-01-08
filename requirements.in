@@ -3,7 +3,6 @@ attrs==23.2.0
 boltons==21.0.0
 bracex==2.4
 build==1.0.3
-certifi==2023.11.17
 cfgv==3.4.0
 charset-normalizer==3.3.2
 click==8.1.7
