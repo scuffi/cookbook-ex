@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import {
+  BrowserRouter, Route,
+} from "react-router-dom";
+import './index.css';
+import { Navigation } from './components/Navigation';
+import { Create } from './routes/Create';
+import { Edit } from './routes/Edit';
+import { Toaster } from 'react-hot-toast';
+import RecipeContext from "./context/recipeContext";
+import { useState } from "react";
+import { Recipe } from "./models";
 function App() {
+  const [ recipes, setRecipes ] = useState<Recipe[]>([]);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <RecipeContext.Provider value={{ recipes, setRecipes }}>
+        <div><Toaster/></div>
+        <div style={{ display: 'flex' }}>
+          <Navigation />
+          <div>
+            <Route path="/recipe/:recipeId" >
+              <Edit />
+            </Route>
+            <Route path="/create">
+              <Create />
+            </Route>
+          </div>
+        </div>
+      </RecipeContext.Provider>
+    </BrowserRouter>
   );
 }
 

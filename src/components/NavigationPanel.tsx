@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { Recipe } from "../models";
 
 const RecipeName = styled.p`
     font-size: 1rem;
@@ -36,13 +37,6 @@ const NavigationButton = styled.button`
         background-color: rgba(0, 0, 0, 0.2);
     }
 `;
-
-type Recipe = {
-    id: string,
-    name: string,
-    description: string,
-    icon: string,
-};
 
 export function NavigationPanel(recipe: Recipe) {
     return (
