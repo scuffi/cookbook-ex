@@ -2,7 +2,7 @@
 
 ### Archie Ferguson
 
-# Installation
+# Installation & Usage
 
 To install, clone this repo and navigate into the root directory of it _(the directory that contains `manage.py` & `requirements.txt`)_
 
@@ -32,7 +32,7 @@ Run the application through docker using
 docker compose up --build
 ```
 
-Test away...
+Now you can use the api at [http://localhost:8000](http://localhost:8000)
 
 # Testing & Coverage
 
