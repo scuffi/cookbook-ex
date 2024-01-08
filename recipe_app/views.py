@@ -159,7 +159,7 @@ class RecipeView(APIView):
 
         recipe.save()
 
-        return JsonResponse(recipe.serialise())
+        return JsonResponse(RecipeSerializer(recipe).data)
 
     def delete(self, request: HttpRequest, id: int) -> JsonResponse:
         """

@@ -1,7 +1,6 @@
 from django.test import TestCase
 from .models import Recipe, Ingredient
-
-from pprint import pprint
+from .serializers import RecipeSerializer
 
 
 # Create your tests here.
@@ -57,8 +56,6 @@ class RecipeViewTestCase(TestCase):
         response = self.client.get("/recipes/1/")
         self.assertEqual(response.status_code, 200)
 
-        pprint(response.json())
-        pprint(self.recipes[0])
         self.assertEqual(response.json(), self.recipes[0])
 
     def test_get_recipe_by_id_not_found(self):
@@ -97,7 +94,9 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.json()["id"], 3)
         self.assertEqual(Recipe.objects.count(), 3)
         self.assertEqual(Ingredient.objects.count(), 11)
-        self.assertEqual(Recipe.objects.get(id=3).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=3)).data, response.json()
+        )
 
     def test_create_recipe_invalid(self):
         data = {
@@ -170,7 +169,9 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.json()["id"], 3)
         self.assertEqual(Recipe.objects.count(), 3)
         self.assertEqual(Ingredient.objects.count(), 11)
-        self.assertEqual(Recipe.objects.get(id=3).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=3)).data, response.json()
+        )
 
     # * Test cases for PATCH requests
 
@@ -186,7 +187,9 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.json()["description"], "Do you have a pizza oven?")
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 7)
-        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=1)).data, response.json()
+        )
 
     def test_modify_recipe_icon(self):
         response = self.client.patch(
@@ -199,7 +202,9 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.json()["icon"], "🎃")
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 7)
-        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=1)).data, response.json()
+        )
 
     def test_modify_recipe_icon_invalid(self):
         response = self.client.patch(
@@ -227,7 +232,9 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(len(response.json()["ingredients"]), 2)
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 6)
-        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=1)).data, response.json()
+        )
 
     def test_modify_recipe_invalid(self):
         response = self.client.patch(
@@ -239,10 +246,14 @@ class RecipeViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Recipe.objects.count(), 2)
         self.assertEqual(Ingredient.objects.count(), 7)
-        self.assertEqual(Recipe.objects.get(id=1).serialise(), response.json())
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=1)).data, response.json()
+        )
 
         # Check that it didn't modify the original recipe
-        self.assertEqual(Recipe.objects.get(id=1).serialise(), self.recipes[0])
+        self.assertEqual(
+            RecipeSerializer(Recipe.objects.get(id=1)).data, self.recipes[0]
+        )
 
     def test_modify_recipe_not_found(self):
         response = self.client.patch(
