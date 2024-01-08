@@ -62,7 +62,7 @@ export function RecipeForm({ recipe }: Props) {
                     console.error(error);
                 });
         } else {
-            axios.post("http://localhost:8000/recipes", recipeState)
+            axios.post("http://localhost:8000/recipes/", recipeState)
                 .then(response => {
                     toast.success("Recipe created successfully!");
                 })

@@ -1,36 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  BrowserRouter, Route,
-} from "react-router-dom";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { Navigation } from './components/Navigation';
-import { Create } from './routes/Create';
-import { Edit } from './routes/Edit';
-import { Toaster } from 'react-hot-toast';
+import App from './App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <BrowserRouter>
-    <div><Toaster/></div>
-    <div style={{ display: 'flex' }}>
-      <Navigation />
-      <div>
-        {/* <Route>
-          <Create />
-        </Route> */}
-        <Route path="/recipe/:recipeId" >
-          <Edit />
-        </Route>
-        <Route path="/create">
-          <Create />
-        </Route>
-      </div>
-    </div>
-  </BrowserRouter>
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function

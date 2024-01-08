@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { SuccessButton } from "./Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { NavigationPanel } from "./NavigationPanel";
-import toast from "react-hot-toast";
+import fetchRecipes from "../api/fetchRecipes";
+import RecipeContext from "../context/recipeContext";
+import { Recipe } from "../models";
 
 const Sidebar = styled.div`
     width: 20rem;
@@ -19,16 +20,11 @@ const Divider = styled.hr`
 `;
 
 export function Navigation() {
-    const [recipes, setRecipes] = useState([]);
+    const { recipes, setRecipes } = useContext(RecipeContext);
 
     useEffect(() => {
-        axios.get("http://localhost:8000/recipes")
-            .then(response => setRecipes(response.data))
-            .catch(error => {
-                toast.error("Failed to load recipes!");
-                console.error(error);
-            });
-    }, []);
+        fetchRecipes(setRecipes)
+    });
  
     return (
         <Sidebar>
@@ -42,6 +38,4 @@ export function Navigation() {
             </div>
         </Sidebar>
     );
-
-    
 }
