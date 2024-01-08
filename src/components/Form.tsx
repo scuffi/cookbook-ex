@@ -53,11 +53,11 @@ export function RecipeForm({ recipe }: Props) {
             <h1 style={{fontSize: "3rem"}}>{recipe ? "Edit" : "Create"} a recipe</h1>
             <Label>Recipe name</Label>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
-                <Input required value={recipeState.name}/>
-                <IconSelector icon={recipeState.icon} onChange={(icon) => setAttribute("icon", icon)}/>
+                <Input required value={recipeState.name} onChange={(name) => setAttribute("name", name.target.value)}/>
+                <IconSelector onChange={(icon) => setAttribute("icon", icon)}>{recipeState.icon}</IconSelector>
             </div>
             <Label>Recipe description</Label>
-            <Input required size={50} multiple value={recipeState.description}/>
+            <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
             <SuccessButton>{recipe ? "Update" : "Create"} recipe</SuccessButton>
