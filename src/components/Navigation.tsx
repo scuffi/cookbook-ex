@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SuccessButton } from "./Button";
+import { ConfirmButton } from "./Button";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { NavigationPanel } from "./NavigationPanel";
@@ -28,7 +28,7 @@ export function Navigation() {
   return (
     <Sidebar>
       <Link to={"/create"}>
-        <SuccessButton>+ New Recipe</SuccessButton>
+        <ConfirmButton>+ New Recipe</ConfirmButton>
       </Link>
       <Divider />
       <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>Recipes</p>
