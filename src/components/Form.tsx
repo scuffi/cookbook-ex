@@ -3,11 +3,13 @@ import { Recipe } from '../models';
 import React, { useContext, useEffect, useState } from 'react';
 import { IconSelector } from './IconSelector';
 import { IngredientForm } from './IngredientForm';
-import { SuccessButton } from './Button';
+import { Button, DeleteButton, SuccessButton } from './Button';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import RecipeContext from '../context/recipeContext';
 import fetchRecipes from '../api/fetchRecipes';
+import modifyRecipe from '../api/modifyRecipe';
+import createRecipe from '../api/createRecipe';
 
 export const Label = styled.label`
     display: block;
@@ -57,32 +59,9 @@ export function RecipeForm({ recipe }: Props) {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (recipe) {
-            axios.patch(`http://localhost:8000/recipes/${recipe.id}/`, recipeState)
-                .then(response => {
-                    toast.success("Recipe updated successfully!");
-                    fetchRecipes(setRecipes);
-                })
-                .catch(error => {
-                    toast.error("Something went wrong! Check the console for more information.");
-                    console.error(error);
-                });
+            modifyRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
         } else {
-            axios.post("http://localhost:8000/recipes/", recipeState)
-                .then(response => {
-                    toast.success("Recipe created successfully!");
-                    fetchRecipes(setRecipes);
-                    // Clear the form
-                    setRecipeState({
-                        name: "",
-                        description: "",
-                        icon: "🍔",
-                        ingredients: []
-                    } as Recipe);
-                })
-                .catch(error => {
-                    toast.error("Something went wrong! Check the console for more information.");
-                    console.error(error);
-                });
+            createRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
         }
     }
 
@@ -98,7 +77,8 @@ export function RecipeForm({ recipe }: Props) {
             <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
-            <SuccessButton type='submit' onSubmit={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+            <SuccessButton type='submit' onClick={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+            {recipe && <DeleteButton type='button' onClick={() => {}}>Delete recipe</DeleteButton>}
         </form>
     );
 }
