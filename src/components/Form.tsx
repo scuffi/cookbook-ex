@@ -10,6 +10,7 @@ import RecipeContext from '../context/recipeContext';
 import fetchRecipes from '../api/fetchRecipes';
 import modifyRecipe from '../api/modifyRecipe';
 import createRecipe from '../api/createRecipe';
+import deleteRecipe from '../api/deleteRecipe';
 
 export const Label = styled.label`
     display: block;
@@ -34,7 +35,7 @@ type Props = {
 }
 
 export function RecipeForm({ recipe }: Props) {
-    const { setRecipes } = useContext(RecipeContext);
+    const { recipes, setRecipes } = useContext(RecipeContext);
     
     const [recipeState, setRecipeState] = useState<Recipe>(recipe ? recipe : {
         name: "",
@@ -61,7 +62,22 @@ export function RecipeForm({ recipe }: Props) {
         if (recipe) {
             modifyRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
         } else {
-            createRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
+            createRecipe(recipeState).then((recipe) => {
+                fetchRecipes().then(setRecipes);
+                window.location.href = `/recipe/${recipe.id}`;
+            });
+        }
+    }
+
+    const handleDelete = (event: React.FormEvent) => {
+        event.preventDefault();
+        if (recipe) {
+            deleteRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
+            if (recipes.length > 0) {
+                window.location.href = `/recipe/${recipes[0].id}`;
+            } else {
+                window.location.href = `/create`;
+            }
         }
     }
 
@@ -78,7 +94,7 @@ export function RecipeForm({ recipe }: Props) {
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
             <SuccessButton type='submit' onClick={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
-            {recipe && <DeleteButton type='button' onClick={() => {}}>Delete recipe</DeleteButton>}
+            {recipe && <DeleteButton type='button' onClick={handleDelete}>Delete recipe</DeleteButton>}
         </form>
     );
 }
