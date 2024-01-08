@@ -28,3 +28,12 @@ export const SuccessButton = styled(Button)`
     font-weight: bold;
     width: 100%;
 `;
+
+export const DeleteButton = styled(Button)`
+    background-color: white;
+    border: 1px solid #fa1e00;
+    color: #fa1e00;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 0.5rem;
+`;
