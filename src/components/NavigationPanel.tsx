@@ -45,17 +45,19 @@ type Recipe = {
 };
 
 export function NavigationPanel(recipe: Recipe) {
-    return <div key={recipe.id}>
-        <NavLink to={`/recipe/${recipe.id}`} style={{ textDecoration: "none", color: "inherit" }} activeStyle={{backgroundColor: "rgba(0, 0, 0, 0.1)"}}>
-            <NavigationButton>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                    <RecipeIcon>{recipe.icon}</RecipeIcon>
-                    <div style={{ marginLeft: "10px" }}>
-                        <RecipeName>{recipe.name}</RecipeName>
-                        <RecipeDescription>{recipe.description}</RecipeDescription>
+    return (
+    <div key={recipe.id}>
+        <NavigationButton>
+            <NavLink to={`/recipe/${recipe.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <RecipeIcon>{recipe.icon}</RecipeIcon>
+                        <div style={{ marginLeft: "10px" }}>
+                            <RecipeName>{recipe.name}</RecipeName>
+                            <RecipeDescription>{recipe.description}</RecipeDescription>
+                        </div>
                     </div>
-                </div>
-            </NavigationButton>
-        </NavLink>
-    </div>;
+            </NavLink>
+        </NavigationButton>
+    </div>
+    );
 }
