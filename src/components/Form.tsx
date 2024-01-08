@@ -80,7 +80,7 @@ export function RecipeForm({ recipe }: Props) {
     }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <h1 style={{fontSize: "3rem"}}>{recipe ? "Edit" : "Create"} a recipe</h1>
             <Label>Recipe name</Label>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
@@ -91,7 +91,7 @@ export function RecipeForm({ recipe }: Props) {
             <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
-            <SuccessButton type='submit' onClick={handleSubmit}>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+            <SuccessButton type='submit'>{recipe ? "Update" : "Create"} recipe</SuccessButton>
             {recipe && <DeleteButton type='button' onClick={handleDelete}>Delete recipe</DeleteButton>}
         </form>
     );
