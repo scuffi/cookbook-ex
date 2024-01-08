@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Recipe } from '../models';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IconSelector } from './IconSelector';
 import { IngredientForm } from './IngredientForm';
 import { SuccessButton } from './Button';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import RecipeContext from '../context/recipeContext';
+import fetchRecipes from '../api/fetchRecipes';
 
 export const Label = styled.label`
     display: block;
@@ -30,6 +32,8 @@ type Props = {
 }
 
 export function RecipeForm({ recipe }: Props) {
+    const { setRecipes } = useContext(RecipeContext);
+    
     const [recipeState, setRecipeState] = useState<Recipe>(recipe ? recipe : {
         name: "",
         description: "",
@@ -56,6 +60,7 @@ export function RecipeForm({ recipe }: Props) {
             axios.patch(`http://localhost:8000/recipes/${recipe.id}/`, recipeState)
                 .then(response => {
                     toast.success("Recipe updated successfully!");
+                    fetchRecipes(setRecipes);
                 })
                 .catch(error => {
                     toast.error("Something went wrong! Check the console for more information.");
@@ -65,6 +70,14 @@ export function RecipeForm({ recipe }: Props) {
             axios.post("http://localhost:8000/recipes/", recipeState)
                 .then(response => {
                     toast.success("Recipe created successfully!");
+                    fetchRecipes(setRecipes);
+                    // Clear the form
+                    setRecipeState({
+                        name: "",
+                        description: "",
+                        icon: "🍔",
+                        ingredients: []
+                    } as Recipe);
                 })
                 .catch(error => {
                     toast.error("Something went wrong! Check the console for more information.");
