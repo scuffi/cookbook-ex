@@ -7,34 +7,34 @@ import fetchRecipes from "../api/fetchRecipes";
 import RecipeContext from "../context/recipeContext";
 
 const Sidebar = styled.div`
-    width: 20rem;
-    height: 100vh;
-    background-color: #eee;
-    padding: 1rem;
+  width: 20rem;
+  height: 100vh;
+  background-color: #eee;
+  padding: 1rem;
 `;
 
 const Divider = styled.hr`
-    border-top: 1px solid #d4d4d4;
-    margin: 1rem 0;
+  border-top: 1px solid #d4d4d4;
+  margin: 1rem 0;
 `;
 
 export function Navigation() {
-    const { recipes, setRecipes } = useContext(RecipeContext);
+  const { recipes, setRecipes } = useContext(RecipeContext);
 
-    useEffect(() => {
-        fetchRecipes().then(setRecipes);
-    }, [setRecipes]);
- 
-    return (
-        <Sidebar>
-            <Link to={"/create"}><SuccessButton>+ New Recipe</SuccessButton></Link>
-            <Divider />
-            <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>Recipes</p>
-            <div style={{marginLeft: "20px"}}>
-                {recipes.map(recipe => (
-                    NavigationPanel(recipe)
-                ))}
-            </div>
-        </Sidebar>
-    );
+  useEffect(() => {
+    fetchRecipes().then(setRecipes);
+  }, [setRecipes]);
+
+  return (
+    <Sidebar>
+      <Link to={"/create"}>
+        <SuccessButton>+ New Recipe</SuccessButton>
+      </Link>
+      <Divider />
+      <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>Recipes</p>
+      <div style={{ marginLeft: "20px" }}>
+        {recipes.map((recipe) => NavigationPanel(recipe))}
+      </div>
+    </Sidebar>
+  );
 }
