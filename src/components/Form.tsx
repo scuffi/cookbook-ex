@@ -48,8 +48,11 @@ export function RecipeForm({ recipe }: Props) {
         setRecipeState(prevState => ({...prevState, [attribute]: value}));
     }
 
+    const handleSubmit = (event: any) => {
+    }
+
     return (
-        <div>
+        <form>
             <h1 style={{fontSize: "3rem"}}>{recipe ? "Edit" : "Create"} a recipe</h1>
             <Label>Recipe name</Label>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
@@ -60,7 +63,7 @@ export function RecipeForm({ recipe }: Props) {
             <Input required size={50} multiple value={recipeState.description} onChange={(description) => setAttribute("description", description.target.value)}/>
             <Label>Ingredients</Label>
             <IngredientForm ingredients={recipeState.ingredients} onChange={(ingredients) => setAttribute("ingredients", ingredients)}/>
-            <SuccessButton>{recipe ? "Update" : "Create"} recipe</SuccessButton>
-        </div>
+            <SuccessButton type='submit'>{recipe ? "Update" : "Create"} recipe</SuccessButton>
+        </form>
     );
 }

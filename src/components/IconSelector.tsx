@@ -23,6 +23,6 @@ export function IconSelector({ children, onChange }: Props) {
     onClickOutside={() => setPickerVisibility(false)}
     content={<Picker onEmojiClick={onEmojiClick} />}
     >
-        <Button onClick={() => setPickerVisibility(!isPickerVisible)}>{children}</Button>
+        <Button type='button' onClick={() => setPickerVisibility(!isPickerVisible)}>{children}</Button>
     </Popover>
 }

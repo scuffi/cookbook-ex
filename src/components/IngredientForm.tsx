@@ -31,13 +31,13 @@ export function IngredientForm({ ingredients, onChange }: Props) {
                     newIngredients[index] = {name: event.target.value};
                     onChange(newIngredients);
                 }} />
-                <DeleteButton onClick={() => {
+                <DeleteButton type='button' onClick={() => {
                     const newIngredients = [...ingredients];
                     newIngredients.splice(index, 1);
                     onChange(newIngredients);
                 }}>🗑️</DeleteButton>
             </div>
         ))}
-        <Button onClick={addIngredient}>➕</Button>
+        <Button type='button' onClick={addIngredient}>➕</Button>
     </div>;
 }
