@@ -26,7 +26,7 @@ export function IngredientForm({ ingredients, onChange }: Props) {
     return <div style={{paddingBottom: "1rem"}}>{
         ingredients.map((ingredient, index) => (
             <div key={index} style={{paddingBottom: "1rem"}}>
-                <Input type="text" value={ingredient.name} onChange={event => {
+                <Input required type="text" value={ingredient.name} onChange={event => {
                     const newIngredients = [...ingredients];
                     newIngredients[index] = {name: event.target.value};
                     onChange(newIngredients);
