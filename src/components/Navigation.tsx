@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { NavigationPanel } from "./NavigationPanel";
 import fetchRecipes from "../api/fetchRecipes";
 import RecipeContext from "../context/recipeContext";
-import { Recipe } from "../models";
 
 const Sidebar = styled.div`
     width: 20rem;
