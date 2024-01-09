@@ -3,8 +3,8 @@ import { ConfirmButton } from "./Button";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { NavigationPanel } from "./NavigationPanel";
-import fetchRecipes from "../api/fetchRecipes";
-import RecipeContext from "../context/recipeContext";
+import { RecipeContext } from "../context";
+import { fetchRecipes } from "../api";
 
 const Sidebar = styled.div`
   width: 20rem;
