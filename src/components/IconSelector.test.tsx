@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { IconSelector } from "./IconSelector";
 
 test("loads picker button", async () => {
@@ -7,17 +7,7 @@ test("loads picker button", async () => {
   const buttonElement = screen.getByText("Picker Button");
   expect(buttonElement).toBeInTheDocument();
 });
-
-// test("opens picker on button press", async () => {
-//   render(<IconSelector onChange={() => {}}>Picker Button</IconSelector>);
-
-//   const buttonElement = screen.getByText("Picker Button");
-//   fireEvent.click(buttonElement);
-
-//   const pickerElement = screen.getByTestId("icon-picker");
-//   expect(pickerElement).toBeInTheDocument();
-// });
-
+// FIXME: When using react-tiny-popover, the selector is rendered higher in the tree, so the popover is not visible, therefore we can't find/click it.
 // test("calls onEmojiClick when emoji selected", async () => {
 //   const mockOnChange = jest.fn();
 //   render(<IconSelector onChange={mockOnChange}>Picker Button</IconSelector>);
