@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Recipe } from "../models";
 import toast from "react-hot-toast";
+import { Recipe } from "../models";
 
 const createRecipe = async (recipe: Recipe) => {
     const response = await axios.post(`http://localhost:8000/recipes/`, recipe);

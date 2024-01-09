@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { ConfirmButton } from "./Button";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { NavigationPanel } from "./NavigationPanel";
-import { RecipeContext } from "../context";
+import styled from "styled-components";
 import { fetchRecipes } from "../api";
+import { RecipeContext } from "../context";
+import { ConfirmButton } from "./Button";
+import { NavigationPanel } from "./NavigationPanel";
 
 const Sidebar = styled.div`
   width: 20rem;

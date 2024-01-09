@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { Recipe } from "../models";
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { createRecipe, deleteRecipe, fetchRecipes, modifyRecipe } from "../api";
+import { RecipeContext } from "../context";
+import { Recipe } from "../models";
+import { ConfirmButton, DeleteButton } from "./Button";
 import { IconSelector } from "./IconSelector";
 import { IngredientForm } from "./IngredientForm";
-import { DeleteButton, ConfirmButton } from "./Button";
-import { useHistory } from "react-router-dom";
-import { RecipeContext } from "../context";
-import { fetchRecipes, modifyRecipe, createRecipe, deleteRecipe } from "../api";
 
 export const Label = styled.label`
   display: block;
