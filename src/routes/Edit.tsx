@@ -1,10 +1,10 @@
+import toast from "react-hot-toast";
 import { Central } from "../components/Layout";
 import { RecipeForm } from "../components/Form";
 import { useHistory, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Recipe } from "../models";
-import fetchRecipe from "../api/fetchRecipe";
-import toast from "react-hot-toast";
+import { fetchRecipe } from "../api";
 
 interface Params {
   recipeId: string;

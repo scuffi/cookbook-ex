@@ -5,11 +5,8 @@ import { IconSelector } from "./IconSelector";
 import { IngredientForm } from "./IngredientForm";
 import { DeleteButton, ConfirmButton } from "./Button";
 import { useHistory } from "react-router-dom";
-import RecipeContext from "../context/recipeContext";
-import fetchRecipes from "../api/fetchRecipes";
-import modifyRecipe from "../api/modifyRecipe";
-import createRecipe from "../api/createRecipe";
-import deleteRecipe from "../api/deleteRecipe";
+import { RecipeContext } from "../context";
+import { fetchRecipes, modifyRecipe, createRecipe, deleteRecipe } from "../api";
 
 export const Label = styled.label`
   display: block;
@@ -38,26 +35,24 @@ export function RecipeForm({ recipe }: Props) {
   const history = useHistory();
 
   const [recipeState, setRecipeState] = useState<Recipe>(
-    recipe
-      ? recipe
-      : ({
+    recipe ||
+      ({
+        name: "",
+        description: "",
+        icon: "🍔",
+        ingredients: [],
+      } as Recipe)
+  );
+
+  useEffect(() => {
+    setRecipeState(
+      recipe ||
+        ({
           name: "",
           description: "",
           icon: "🍔",
           ingredients: [],
         } as Recipe)
-  );
-
-  useEffect(() => {
-    setRecipeState(
-      recipe
-        ? recipe
-        : ({
-            name: "",
-            description: "",
-            icon: "🍔",
-            ingredients: [],
-          } as Recipe)
     );
   }, [recipe]);
 
