@@ -128,7 +128,11 @@ export function RecipeForm({ recipe }: Props) {
         {recipe ? "Update" : "Create"} recipe
       </ConfirmButton>
       {recipe && (
-        <DeleteButton type="button" onClick={handleDelete}>
+        <DeleteButton
+          data-testid="form-submit-btn"
+          type="button"
+          onClick={handleDelete}
+        >
           Delete recipe
         </DeleteButton>
       )}
