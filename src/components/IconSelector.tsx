@@ -11,6 +11,12 @@ type Props = {
 export function IconSelector({ children, onChange }: Props) {
   const [isPickerVisible, setPickerVisibility] = useState(false);
 
+  /**
+   * Function to handle the confirmation of an emoji selection. This function will be called when the emoji
+   * is clicked in the picker.
+   * @param {EmojiClickData} emoji - The clicked emoji.
+   * @param {MouseEvent} event - The click event.
+   */
   const onEmojiClick = (emoji: EmojiClickData, event: MouseEvent) => {
     setPickerVisibility(false);
     onChange(emoji.emoji);

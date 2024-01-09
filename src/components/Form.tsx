@@ -60,6 +60,11 @@ export function RecipeForm({ recipe }: Props) {
     setRecipeState((prevState) => ({ ...prevState, [attribute]: value }));
   };
 
+  /**
+   * Function to handle the submition of the form, and will either attempt to modify or create a recipe,
+   * depending on whether or not the recipe already exists. It will also fetch the recipes after the modification.
+   * @param event - The event parameter is of type React.FormEvent
+   */
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (recipe) {
@@ -72,6 +77,10 @@ export function RecipeForm({ recipe }: Props) {
     }
   };
 
+  /**
+   * Function to handle the press of the delete button. It will delete the recipe and redirect to the first recipe in the list.
+   * @param event - The event parameter is of type React.FormEvent
+   */
   const handleDelete = (event: React.FormEvent) => {
     event.preventDefault();
     if (recipe) {
