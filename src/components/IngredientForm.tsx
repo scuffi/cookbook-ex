@@ -17,6 +17,9 @@ type Props = {
 };
 
 export function IngredientForm({ ingredients, onChange }: Props) {
+  /**
+   * Function to add a new ingredient to the list of ingredients, then call the onChange prop with the new ingredients.
+   */
   const addIngredient = () => {
     const newIngredients = [...ingredients];
     newIngredients.push({ name: "" });
