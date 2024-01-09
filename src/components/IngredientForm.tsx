@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { Ingredient } from "../models";
 import { Button } from "./Button";
 import { Input } from "./Form";
-import { Ingredient } from "../models";
 
 const DeleteButton = styled.button`
   font-size: 1rem;
