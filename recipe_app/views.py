@@ -1,5 +1,5 @@
 import json
-import emoji
+from django.forms import ValidationError
 
 from typing import Optional, Dict
 
@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.http import Http404
 from django.db import transaction
 from django.db.models import QuerySet
+from django.core.exceptions import BadRequest
 
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
@@ -29,6 +30,22 @@ class RecipeView(APIView):
 
     It acts as a CRUD API to interact with Recipes and their associated Ingredients.
     """
+
+    def _validate_model(self, recipe: Recipe) -> None:
+        """
+        The `_validate_model` function validates a `Recipe` object before saving it to the database.
+
+        Args:
+          recipe (Recipe): The `recipe` parameter is a `Recipe` object that needs to be validated.
+
+        Returns:
+          The function `_validate_model` does not return anything. It raises a `ValidationError` if the
+        `Recipe` object is invalid.
+        """
+        try:
+            recipe.full_clean()
+        except ValidationError as e:
+            raise BadRequest(e.message_dict)
 
     def _handle_get_by_id(self, id: int) -> Recipe:
         """
@@ -147,15 +164,18 @@ class RecipeView(APIView):
             recipe.description = body["description"]
 
         if "icon" in body:
-            if emoji.is_emoji(body["icon"]):
-                recipe.icon = body["icon"]
-            else:
-                return JsonResponse({"message": "Invalid emoji for icon"}, status=400)
+            recipe.icon = body["icon"]
 
         if "ingredients" in body:
             recipe.ingredients.all().delete()
             for ingredient_data in body["ingredients"]:
                 Ingredient.objects.create(name=ingredient_data["name"], recipe=recipe)
+        try:
+            recipe.full_clean()
+        except ValidationError as e:
+            return JsonResponse({"message": e.messages}, status=400)
+
+        self._validate_model(recipe)
 
         recipe.save()
 
