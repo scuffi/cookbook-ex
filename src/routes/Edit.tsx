@@ -1,33 +1,32 @@
-import { Central } from '../components/Layout';
-import { RecipeForm } from '../components/Form';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Recipe } from '../models';
-
+import { Central } from "../components/Layout";
+import { RecipeForm } from "../components/Form";
+import { useHistory, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Recipe } from "../models";
+import fetchRecipe from "../api/fetchRecipe";
+import toast from "react-hot-toast";
 
 interface Params {
-    recipeId: string;
+  recipeId: string;
 }
 
 export function Edit() {
-    const { recipeId } = useParams<Params>();
-    const [recipe, setRecipe] = useState<Recipe>();
+  const { recipeId } = useParams<Params>();
+  const history = useHistory();
+  const [recipe, setRecipe] = useState<Recipe>();
 
-    useEffect(() => {
-        axios.get(`http://localhost:8000/recipes/${recipeId}`)
-            .then(response => setRecipe(response.data))
-            .catch(error => console.error(error));
-    }
-    , [recipeId]);
+  useEffect(() => {
+    fetchRecipe(recipeId)
+      .then(setRecipe)
+      .catch(() => {
+        toast.error(`Recipe with id ${recipeId} not found`);
+        history.replace("/create");
+      });
+  }, [recipeId, history]);
 
-    return (
-        <Central>
-            {recipe ? 
-                <RecipeForm recipe={recipe}/>
-                : 
-                <h1>Loading...</h1>
-            }
-        </Central>
-    );
+  return (
+    <Central>
+      {recipe ? <RecipeForm recipe={recipe} /> : <h1>Loading...</h1>}
+    </Central>
+  );
 }
