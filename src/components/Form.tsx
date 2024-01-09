@@ -104,6 +104,7 @@ export function RecipeForm({ recipe }: Props) {
           required
           value={recipeState.name}
           onChange={(name) => setAttribute("name", name.target.value)}
+          data-testid="form-name-input"
         />
         <IconSelector onChange={(icon) => setAttribute("icon", icon)}>
           {recipeState.icon}
@@ -118,18 +119,19 @@ export function RecipeForm({ recipe }: Props) {
         onChange={(description) =>
           setAttribute("description", description.target.value)
         }
+        data-testid="form-description-input"
       />
       <Label>Ingredients</Label>
       <IngredientForm
         ingredients={recipeState.ingredients}
         onChange={(ingredients) => setAttribute("ingredients", ingredients)}
       />
-      <ConfirmButton type="submit">
+      <ConfirmButton data-testid="form-submit-btn" type="submit">
         {recipe ? "Update" : "Create"} recipe
       </ConfirmButton>
       {recipe && (
         <DeleteButton
-          data-testid="form-submit-btn"
+          data-testid="form-delete-btn"
           type="button"
           onClick={handleDelete}
         >

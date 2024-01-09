@@ -7,10 +7,8 @@ import { RecipeContext } from "../context";
 import { ReactNode, useState } from "react";
 import { Recipe } from "../models";
 
-// Create a new instance of the mock adapter
 const mock = new MockAdapter(axios);
 
-// Mock the API response
 mock.onGet("http://localhost:8000/recipes").reply(200, [
   {
     id: 1,
