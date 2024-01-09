@@ -27,7 +27,7 @@ export function Navigation() {
 
   return (
     <Sidebar>
-      <Link to={"/create"}>
+      <Link data-testid="nav-create-btn" to={"/create"}>
         <ConfirmButton>+ New Recipe</ConfirmButton>
       </Link>
       <Divider />
