@@ -43,6 +43,7 @@ export function NavigationPanel(recipe: Recipe) {
     <div key={recipe.id}>
       <NavigationButton>
         <NavLink
+          data-testid="navigation-button"
           to={`/recipe/${recipe.id}`}
           style={{ textDecoration: "none", color: "inherit" }}
         >
