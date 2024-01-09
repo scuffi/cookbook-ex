@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { IconSelector } from "./IconSelector";
 import { IngredientForm } from "./IngredientForm";
 import { DeleteButton, ConfirmButton } from "./Button";
+import { useHistory } from "react-router-dom";
 import RecipeContext from "../context/recipeContext";
 import fetchRecipes from "../api/fetchRecipes";
 import modifyRecipe from "../api/modifyRecipe";
@@ -34,6 +35,7 @@ type Props = {
 
 export function RecipeForm({ recipe }: Props) {
   const { recipes, setRecipes } = useContext(RecipeContext);
+  const history = useHistory();
 
   const [recipeState, setRecipeState] = useState<Recipe>(
     recipe
@@ -70,7 +72,7 @@ export function RecipeForm({ recipe }: Props) {
     } else {
       createRecipe(recipeState).then((recipe) => {
         fetchRecipes().then(setRecipes);
-        window.location.href = `/recipe/${recipe.id}`;
+        history.push(`/recipe/${recipe.id}`);
       });
     }
   };
@@ -80,9 +82,9 @@ export function RecipeForm({ recipe }: Props) {
     if (recipe) {
       deleteRecipe(recipeState).then(() => fetchRecipes().then(setRecipes));
       if (recipes.length > 0) {
-        window.location.href = `/recipe/${recipes[0].id}`;
+        history.replace(`/recipe/${recipes[0].id}`);
       } else {
-        window.location.href = `/create`;
+        history.replace(`/create`);
       }
     }
   };
