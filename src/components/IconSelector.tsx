@@ -28,7 +28,7 @@ export function IconSelector({ children, onChange }: Props) {
       padding={10}
       positions={["right", "bottom", "left", "top"]}
       onClickOutside={() => setPickerVisibility(false)}
-      content={<Picker onEmojiClick={onEmojiClick} />}
+      content={<Picker data-testid="icon-picker" onEmojiClick={onEmojiClick} />}
     >
       <Button
         type="button"
