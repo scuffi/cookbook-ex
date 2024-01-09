@@ -298,7 +298,46 @@ class RecipeViewTestCase(TestCase):
             "/recipes/",
         )
 
-    # * Test relationships between Recipe and Ingredient
+
+class ModelTestCase(TestCase):
+    def setUp(self):
+        self.recipes = [
+            {
+                "id": 1,
+                "name": "Pizza",
+                "description": "Put it in the oven",
+                "icon": "🍕",
+                "ingredients": [
+                    {"name": "dough"},
+                    {"name": "cheese"},
+                    {"name": "tomato"},
+                ],
+            },
+            {
+                "id": 2,
+                "name": "Caprese",
+                "description": "...is a salad",
+                "icon": None,
+                "ingredients": [
+                    {"name": "mozzerella"},
+                    {"name": "tomato"},
+                    {"name": "basil"},
+                    {"name": "oil"},
+                ],
+            },
+        ]
+
+        for recipe in self.recipes:
+            created_recipe = Recipe.objects.create(
+                name=recipe["name"],
+                description=recipe["description"],
+                icon=recipe["icon"],
+            )
+
+            for ingredient_data in recipe["ingredients"]:
+                Ingredient.objects.create(
+                    name=ingredient_data["name"], recipe=created_recipe
+                )
 
     def test_one_recipe_to_one_ingredient(self):
         pizza_recipe = Recipe.objects.get(id=1)
