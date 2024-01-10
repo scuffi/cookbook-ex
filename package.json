@@ -26,7 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pre-commit": "./pre-commit.sh"
   },
   "eslintConfig": {
     "extends": [
