@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Recipe } from "../models";
+import config from "../config";
 
 /**
  * Function to modify an existing recipe in the database. The given recipe will update the existing recipe, based
@@ -10,7 +11,7 @@ import { Recipe } from "../models";
  * @returns The modified Recipe object
  */
 const modifyRecipe = async (recipe: Recipe) => {
-    const response = await axios.patch(`http://localhost:8000/recipes/${recipe.id}/`, recipe);
+    const response = await axios.patch(`${config.api.url}${recipe.id}/`, recipe);
 
     if (response.status !== 200) {
         toast.error("Failed to update recipe!");

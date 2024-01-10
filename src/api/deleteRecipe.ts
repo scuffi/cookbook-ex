@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Recipe } from "../models";
+import config from "../config";
 
 /**
  * Function to delete a recipe from the database. Whilst this takes an object, the only field that is used is
@@ -9,7 +10,7 @@ import { Recipe } from "../models";
  * @returns An object containing a message that the recipe was deleted successfully.
  */
 const deleteRecipe = async (recipe: Recipe) => {
-    const response = await axios.delete(`http://localhost:8000/recipes/${recipe.id}/`);
+    const response = await axios.delete(`${config.api.url}${recipe.id}/`);
 
     if (response.status !== 200) {
         toast.error("Failed to delete recipe!");

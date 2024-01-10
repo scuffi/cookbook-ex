@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Recipe } from "../models";
+import config from "../config";
 
 /**
  * Function to attempt to create a recipe from a given object.
@@ -9,7 +10,7 @@ import { Recipe } from "../models";
  * @returns The created Recipe object, which will be the same as the given Recipe, but with an `id` field specified.
  */
 const createRecipe = async (recipe: Recipe) => {
-    const response = await axios.post(`http://localhost:8000/recipes/`, recipe);
+    const response = await axios.post(config.api.url, recipe);
 
     if (response.status !== 201) {
         toast.error("Failed to create recipe!");
