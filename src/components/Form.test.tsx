@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { RecipeForm } from "./Form";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { createRecipe } from "../api";
 
 const mock = new MockAdapter(axios);
 
@@ -83,10 +84,16 @@ test("allows user to edit a recipe", async () => {
 
   const nameInput = screen.getByTestId("form-name-input");
   const submitButton = screen.getByText("Update recipe");
+  jest.spyOn(axios, "patch");
+
   fireEvent.change(nameInput, { target: { value: "New Pizza" } });
   submitButton.click();
 
   expect(nameInput).toHaveValue("New Pizza");
+
+  await waitFor(() => {
+    expect(axios.patch).toHaveBeenCalled();
+  });
 });
 
 test("rejects submission when input fields are empty", async () => {
@@ -127,9 +134,14 @@ test("allows user to delete recipe", async () => {
     </Router>
   );
   const deleteButton = screen.getByTestId("form-delete-btn");
+  jest.spyOn(axios, "delete");
+
   fireEvent.click(deleteButton);
 
   expect(screen.queryByText("Pizza")).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(axios.delete).toHaveBeenCalled();
+  });
 });
 
 test("allows user to create recipe", async () => {
@@ -141,7 +153,8 @@ test("allows user to create recipe", async () => {
   );
   const nameInput = screen.getByTestId("form-name-input");
   const descriptionInput = screen.getByTestId("form-description-input");
-  const submitButton = screen.getByText("Create recipe");
+  const submitButton = screen.getByTestId("form-submit-btn");
+  jest.spyOn(axios, "post");
 
   fireEvent.change(nameInput, { target: { value: "Pizza" } });
   fireEvent.change(descriptionInput, {
@@ -150,11 +163,6 @@ test("allows user to create recipe", async () => {
   fireEvent.click(submitButton);
 
   await waitFor(() => {
-    expect(nameInput).toHaveValue("Pizza");
-  });
-
-  await waitFor(() => {
-    // FIXME: This test is failing because the delete button is not redirecting when completed, but the functionality is working
-    // expect(screen.getByTestId("form-delete-btn")).toBeInTheDocument();
+    expect(axios.post).toHaveBeenCalled();
   });
 });
